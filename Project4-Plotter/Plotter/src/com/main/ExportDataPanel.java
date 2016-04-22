@@ -18,8 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class ExportDataPanel extends JDialog implements ActionListener{
 	
 	int HEIGHT=200;
-	int WIDTH=400;
-	
+	int WIDTH=400;	
 
 	private JPanel pan;
 	private JButton save=null;
@@ -56,9 +55,7 @@ public class ExportDataPanel extends JDialog implements ActionListener{
         
         filePath=new JTextField();
         filePath.setBounds(80,r,250,20);
-		add(filePath);
-		
-			
+		add(filePath);					
 		
 		loadFile=new JButton(">");
 		loadFile.setBounds(330,r,50,20);	
@@ -70,12 +67,7 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 				
 			new ActionListener() {
 				
-	
-				
-
-				public void actionPerformed(ActionEvent arg0) {
-				
-					
+				public void actionPerformed(ActionEvent arg0) {									
 					fc.setDialogType(JFileChooser.SAVE_DIALOG);
 					fc.setDialogTitle("Save to...  ");
 					FileFilter txtImage = new FileNameExtensionFilter(".txt", "txt");
@@ -83,11 +75,9 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 					fc.setFileFilter(txtImage);
 					fc.setAcceptAllFileFilterUsed(false);
 					
-					if(filePath.getText()!=null)
-					{
+					if(filePath.getText()!=null){
 						File file=new File(filePath.getText());
-						fc.setCurrentDirectory(file);
-						
+						fc.setCurrentDirectory(file);						
 					}	
 			
 					int returnVal = fc.showSaveDialog(null);
@@ -96,19 +86,10 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 						File file = fc.getSelectedFile();
 						/**Sets the file extension to .txt*/
 						file = new File(file.toString() + ".txt");
-						if(file==null) return;
-						
-						filePath.setText(file.getAbsolutePath());
-								
-					} 
-					
-				}
-
-
-
-			
-			}	
-				
+						filePath.setText(file.getAbsolutePath());								
+					} 					
+				}			
+			}					
 		);
 		
 		r+=30;
@@ -120,8 +101,7 @@ public class ExportDataPanel extends JDialog implements ActionListener{
     	values_separator=new JTextField();
     	values_separator.setText(",");
     	values_separator.setBounds(120,r,50,20);
-        pan.add(values_separator);
-				
+        pan.add(values_separator);				
         
 		r+=30;
 		
@@ -149,65 +129,40 @@ public class ExportDataPanel extends JDialog implements ActionListener{
         
         add(pan);
         
-        setVisible(true);
-        
+        setVisible(true);     
 	}
 
-
-
-
-	private void init() {
-		
+	private void init() {		
 		v_separator=",";
 		d_separator="\n";
 	}
-
-
-
-
-	
-	
-	
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
 		Object obj = arg0.getSource();
 		
-		if(obj==save){
-			
+		if(obj==save){			
 			save();
 		}
-		else if(obj==exit){
-			
+		else if(obj==exit){			
 			exit();
-		}
-		
+		}		
 	}
-
-
-
 
 	private void exit() {
-		dispose();
-		
+		dispose();	
 	}
 
-
-
-
 	private void save() {
-
 		PrintWriter pw=null;
 		boolean displaySaveSuccessful = true;
 		
-		try{
-			
+		try{		
 			v_separator=values_separator.getText();
 			
 			if(v_separator==null || v_separator.equals(""))
-				v_separator=",";
-			
+				v_separator=",";			
 			
 			d_separator=data_separator.getText();
 			
@@ -224,30 +179,22 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 			}
 			pw=new PrintWriter(new File(filePath.getText()));
 			
-			if(function instanceof double[][]){
+			if(function instanceof double[][]){							
+				double[][] fun=(double[][]) function;				
 				
-				
-				double[][] fun=(double[][]) function;
-				
-				for(int i=0;i<fun.length;i++){
-					
+				for(int i=0;i<fun.length;i++){					
 					String str=decomposeFunction(fun[i]);
-					pw.print(str);
-					
-				}
-				
+					pw.print(str);					
+				}				
 			}
-			else if(function instanceof double[][][]){
-				
-				
+			
+			else if(function instanceof double[][][]){								
 				double[][][] fun=(double[][][]) function;
 				
-				for(int i=0;i<fun.length;i++){
+				for(int i=0;i<fun.length;i++){					
+					double[][] inner_fun=fun[i];					
 					
-					double[][] inner_fun=fun[i];
-					
-					for (int j = 0; j < inner_fun.length; j++) {
-						
+					for (int j = 0; j < inner_fun.length; j++) {						
 						String str=decomposeFunction3D(inner_fun[j]);
 						pw.print(str);
 					}
@@ -269,26 +216,14 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 				JOptionPane.showMessageDialog(this,  msg, "Success!", 1);				
 			}
 			displaySaveSuccessful=true;
-		}
-		
-		
-		
+		}		
 	}
-
-
-
 
 	private String decomposeFunction3D(double[] data) {
-		return data[0]+v_separator+data+v_separator+data[1]+v_separator+data[2]+d_separator;
-		
+		return data[0]+v_separator+data+v_separator+data[1]+v_separator+data[2]+d_separator;		
 	}
 
-
-
-
-	private String decomposeFunction(double[] data) {
-		
+	private String decomposeFunction(double[] data) {	
 		return data[0]+v_separator+data[1]+d_separator;
 	}
-
 }
