@@ -35,6 +35,8 @@ import javax.swing.JTextField;
 import javax.swing.RepaintManager;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.maths.Calculator;
 
@@ -786,35 +788,30 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 	}
 
-    
-
-
-
-
-
-
-
-
-
-
-	private void saveImage() {
-		
-		
+	private void saveImage() 
+	{
+		/**Sets the save dialogue to show only .jpg extension*/
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
+		FileFilter jpgImage = new FileNameExtensionFilter(".jpg", "jpg");
+		fc.addChoosableFileFilter(jpgImage);
+		fc.setFileFilter(jpgImage);
+		fc.setAcceptAllFileFilterUsed(false);
+		
 		if(currentDirectory!=null)
 			fc.setCurrentDirectory(currentDirectory);
 		
-		int returnVal = fc.showOpenDialog(this);
+		int returnVal = fc.showSaveDialog(this);
 		
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			
+		if (returnVal == JFileChooser.APPROVE_OPTION) 
+		{			
 			currentDirectory=fc.getCurrentDirectory();
 			File file = fc.getSelectedFile();
-			saveImage(file);
 			
-		} 
-		
-		
+			/**Sets the file extension to .jpg*/
+			file = new File(file.toString() + ".jpg");
+
+			saveImage(file);			
+		}
 	}
 	
 	private void saveImage(File file) {
