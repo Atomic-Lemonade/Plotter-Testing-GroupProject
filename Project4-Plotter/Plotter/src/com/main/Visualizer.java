@@ -256,7 +256,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	/**
 	 * 
 	 */
-	private void buildBottomPanel() {
+	private void buildBottomPanel() {		
 		
 		draw=new JButton("<html><body><u>D</u>raw</body</html>");
 		draw.addActionListener(this);
@@ -280,16 +280,22 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		JLabel moves=new JLabel("arrow up,down,left,right to move axis ");
 		moves.setBounds(350,2,300,20);
 		bottom.add(moves);
+			
+		/**Removes coordinate labels when in Cartesian3D*/
+		if(VISUALIZATION_STATE!=CARTESIAN3D_STATE)
+		{		
+			JLabel lscreenpoint = new JLabel();
+			lscreenpoint.setText("Position x,y: ");
+			lscreenpoint.setBounds(650,2,100,20);
+			bottom.add(lscreenpoint);	
+			
+			screenPoint=new JLabel();
+			screenPoint.setText(",");
+			screenPoint.setBounds(750,2,100,20);
+			bottom.add(screenPoint);
+		}
 		
-		JLabel lscreenpoint = new JLabel();
-		lscreenpoint.setText("Position x,y: ");
-		lscreenpoint.setBounds(650,2,100,20);
-		bottom.add(lscreenpoint);
-		
-		screenPoint=new JLabel();
-		screenPoint.setText(",");
-		screenPoint.setBounds(750,2,100,20);
-		bottom.add(screenPoint);
+
 		
 		bottom.setBounds(0,UPBORDER+HEIGHT,LEFTBORDER+WIDTH+RIGHTBORDER,BUTTOMBORDER);
 		add(bottom);
@@ -298,7 +304,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		less.addKeyListener(this);
 		more.addKeyListener(this);
 
-		
+		add(bottom);
 	}
 
 
@@ -733,8 +739,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 			displayedFunction.setText(calc.DISPLAYED_FUNCTION);
 			remove(up);
 			remove(right);
+			remove(bottom);
 			buildUpPanel();
 			buildRightPanel();
+			buildBottomPanel();
 			jmt3.setVisible(true);
 			jmt4.setVisible(true);
 			setColors(p);
@@ -750,8 +758,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 			displayedFunction.setText(calc.DISPLAYED_FUNCTION);
 			remove(up);
 			remove(right);
+			remove(bottom);
 			buildPolarUpPanel();
 			buildPolarRightPanel();
+			buildBottomPanel();
 			jmt3.setVisible(false);
 			jmt4.setVisible(false);
 			setColors(p);
@@ -765,12 +775,15 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 			displayedFunction.setText(calc.DISPLAYED_FUNCTION);
 			remove(up);
 			remove(right);
+			remove(bottom);
 			build3DUpPanel();
 			build3DRightPanel();
+			buildBottomPanel();
 			jmt3.setVisible(false);
 			jmt4.setVisible(false);
+
 			setColors(p);
-			repaint();
+			repaint();			
 		}
 		else if(o==jmt31){
 			selectColors();
