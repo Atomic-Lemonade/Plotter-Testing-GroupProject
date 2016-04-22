@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ExportDataPanel extends JDialog implements ActionListener{
 	
@@ -74,8 +76,12 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 				public void actionPerformed(ActionEvent arg0) {
 				
 					
-					fc.setDialogType(JFileChooser.OPEN_DIALOG);
-					fc.setDialogTitle("Load format  ");
+					fc.setDialogType(JFileChooser.SAVE_DIALOG);
+					fc.setDialogTitle("Save to...  ");
+					FileFilter txtImage = new FileNameExtensionFilter(".txt", "txt");
+					fc.addChoosableFileFilter(txtImage);
+					fc.setFileFilter(txtImage);
+					fc.setAcceptAllFileFilterUsed(false);
 					
 					if(filePath.getText()!=null)
 					{
@@ -84,11 +90,12 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 						
 					}	
 			
-					int returnVal = fc.showOpenDialog(null);
+					int returnVal = fc.showSaveDialog(null);
 					
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						File file = fc.getSelectedFile();
-						
+						/**Sets the file extension to .txt*/
+						file = new File(file.toString() + ".txt");
 						if(file==null) return;
 						
 						filePath.setText(file.getAbsolutePath());
@@ -192,7 +199,8 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 	private void save() {
 
 		PrintWriter pw=null;
-
+		boolean displaySaveSuccessful = true;
+		
 		try{
 			
 			v_separator=values_separator.getText();
@@ -208,7 +216,7 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 			
 			if(filePath.getText()==null || filePath.getText().equals(""))
 			{	
-			
+				displaySaveSuccessful = false;
 				String msg="Missing file path!";
 				JOptionPane.showMessageDialog(this,msg,"Error",JOptionPane.ERROR_MESSAGE);
 			    
@@ -247,7 +255,7 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 			}
 			
 		}catch (Exception e) {
-			
+			displaySaveSuccessful = false;
 			e.printStackTrace();
 			String msg="Error while trying to save file";
 			JOptionPane.showMessageDialog(this,msg,"Error",JOptionPane.ERROR_MESSAGE);
@@ -255,6 +263,12 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 		finally{
 			if(pw!=null)
 				pw.close();
+			if(displaySaveSuccessful)
+			{
+				String msg="Save successful";
+				JOptionPane.showMessageDialog(this,  msg, "Success!", 1);				
+			}
+			displaySaveSuccessful=true;
 		}
 		
 		
