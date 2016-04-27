@@ -1163,8 +1163,8 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
    public void mouseWheelMoved(MouseWheelEvent arg0) {
 		int pix=arg0.getUnitsToScroll();
-		if(pix>0) up(-1);
-		else up(+1);
+		if(pix>0) zoom(-1);
+		else zoom(+1);
 	}
 
 
