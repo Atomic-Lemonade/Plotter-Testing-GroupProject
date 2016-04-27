@@ -118,6 +118,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		center=new JPanel();	
 		center.addMouseWheelListener(this);
 		
+		
 		setLocation(20,20);
 		setTitle(VERSION);
 		setSize(LEFTBORDER+WIDTH+RIGHTBORDER,UPBORDER+HEIGHT+BUTTOMBORDER);
@@ -159,18 +160,17 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 		
 		//override to avoid a tricky paint problem
-		RepaintManager.setCurrentManager(
-				
-		new RepaintManager(){
-
-			public void paintDirtyRegions() {
-				
-				
-				super.paintDirtyRegions();
-				if(redrawAfterMenu ) {draw();redrawAfterMenu=false;}
+		RepaintManager.setCurrentManager(new RepaintManager()
+		{
+			public void paintDirtyRegions() 
+			{						
+				super.paintDirtyRegions();				
+				if(redrawAfterMenu ) 
+				{
+					draw();redrawAfterMenu=false;
 				}
-				
 			}				
+		}				
 		);
 		setInitColors(p);
 		center.setBackground(BACKGROUND_COLOR);
@@ -655,9 +655,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	 */
 	public void repaint() {
 		super.repaint();
-	}
-	
-	
+	}		
 
 	/**
 	 * 
@@ -870,30 +868,22 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	private void selectColors() {
 		
 		Colorpanel cp=new Colorpanel(p);
-		setColors(p);
-		
-		
+		setColors(p);			
 	}
 
-
-
-	private void setColors(Properties p2) {
-		
-		setInitColors(p2);
-		
+	private void setColors(Properties p2) {		
+		setInitColors(p2);		
 		center.setBackground(BACKGROUND_COLOR);
 		up.setBackground(PANEL_COLOR);
 		bottom.setBackground(PANEL_COLOR);
 		right.setBackground(PANEL_COLOR);
-		
-		repaint();
+		draw();
 	}
 	
 	private void setInitColors(Properties p2) {
 
 		if(p2.getProperty("BACKGROUND_COLOR")!=null){
 			BACKGROUND_COLOR=Colorpanel.buildColor(p2.getProperty("BACKGROUND_COLOR"));
-
 		}
 		else{
 			p2.setProperty("BACKGROUND_COLOR",Colorpanel.decomposeColor(BACKGROUND_COLOR));
@@ -901,7 +891,6 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 		if(p2.getProperty("PANEL_COLOR")!=null){
 			PANEL_COLOR=Colorpanel.buildColor(p2.getProperty("PANEL_COLOR"));
-
 		}
 		else{
 			p2.setProperty("PANEL_COLOR",Colorpanel.decomposeColor(PANEL_COLOR));
@@ -1183,31 +1172,13 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 			screenPoint.setText("");	
 	}
 
-
-
-
-
-
 	@Override
-	public void focusGained(FocusEvent arg0) {
-		
-		
+	public void focusGained(FocusEvent arg0) {	
 		Object obj = arg0.getSource();
-		
 	}
 
-
-
-
-
-
 	@Override
-	public void focusLost(FocusEvent arg0) {
-		
+	public void focusLost(FocusEvent arg0) {		
 		Object obj = arg0.getSource();
-
-		
-	}
-   
-   
+	} 
 }
