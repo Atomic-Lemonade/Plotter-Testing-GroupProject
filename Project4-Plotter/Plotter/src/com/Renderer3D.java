@@ -376,19 +376,17 @@ public class Renderer3D {
 
 	}
 
-	
-	public void drawAxes() {
-		
+	/**Draws the axis according to the color properties file in the Visualizer*/
+	public void drawAxes() {	
 		int length=50;
-		int redRgb = Color.red.getRGB();
+		int axis_color = Visualizer.AXIS_COLOR.getRGB();
 		
 		//y axis
-		decomposeLine(0,0,0,0,0,length,zbuffer,redRgb);
+		decomposeLine(0,0,0,0,0,length,zbuffer,axis_color);
 		//x axis
-		decomposeLine(0,0,0,0,length,0,zbuffer,redRgb);
+		decomposeLine(0,0,0,0,length,0,zbuffer,axis_color);
 		//z axis
-		decomposeLine(0,0,0,length,0,0,zbuffer,redRgb);
-		
+		decomposeLine(0,0,0,length,0,0,zbuffer,axis_color);		
 	}
 	
 	public void decomposeLine(double x1,
