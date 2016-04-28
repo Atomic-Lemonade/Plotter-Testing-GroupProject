@@ -107,6 +107,8 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	private JLabel screenPoint;
 	private int xPressed;
 	private int yPressed;
+	private int prevX;
+	private int prevY;
 	private File currentDirectory=null;
 	private BufferedImage buf=null;
 	private JMenuItem jmt42;
@@ -1136,6 +1138,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 		 xPressed = arg0.getX();
 	     yPressed = arg0.getY();
+	     
+	     prevX=xPressed;
+	     prevY=yPressed;
 	}
 
 
@@ -1152,16 +1157,21 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	public void mouseDragged(MouseEvent arg0) {
-
+		/**Current mouse X and Y values*/
         int x = arg0.getX();
         int y = arg0.getY();
         
-        int xDifference = x-xPressed;
-        int yDifference = y-yPressed;
+        /**Difference between previous mouse position and current*/
+        int xDifference = x-prevX;
+        int yDifference = y-prevY;
         
-        calc.drag(xDifference+x, -yDifference);
-        draw();
-	
+        /**Sets prevX/prevY to the now current mouse position*/
+        prevX=x;
+        prevY=y;
+
+        /**Translates the image according to the differences in mouse position*/
+        calc.moveCenter(xDifference, -yDifference);
+        draw();	
 	}
 	
 	
