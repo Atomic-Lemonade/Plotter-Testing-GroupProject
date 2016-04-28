@@ -60,6 +60,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	JButton more=null;
 	JButton less=null;
 	JButton calculateIntegral=null;
+	JButton centerBtn = null;
 	
 	//size of the diplay panel
 	public static int HEIGHT=500;
@@ -260,9 +261,13 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	 */
 	private void buildBottomPanel() {		
 		
-		draw=new JButton("<html><body><u>D</u>raw</body</html>");
-		draw.addActionListener(this);
-		draw.setBounds(100,2,100,20);
+	    draw=new JButton("<html><body><u>D</u>raw</body></html>");
+        draw.addActionListener(this);
+        draw.setBounds(20,2,60,20);
+        
+        centerBtn = new JButton("<html><body><u>C</u>enter</body></html>");
+        centerBtn.addActionListener(this);
+        centerBtn.setBounds(100,2,80,20);
 		
 		more=new JButton("+");
 		more.addActionListener(this);
@@ -278,6 +283,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		bottom.add(draw);
 		bottom.add(less);  
 		bottom.add(more);
+		bottom.add(centerBtn);
 		
 		JLabel moves=new JLabel("arrow up,down,left,right to move axis ");
 		moves.setBounds(350,2,300,20);
@@ -305,6 +311,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		draw.addKeyListener(this);
 		less.addKeyListener(this);
 		more.addKeyListener(this);
+		centerBtn.addKeyListener(this);
 
 		add(bottom);
 	}
@@ -711,6 +718,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 			
 			zoom(-1);
 		}
+		else if (o==centerBtn){
+		    centerGraph();
+        }
 		else if (o==calculateIntegral ||o==jmt3){
 			
 			calculateIntegral();
@@ -1028,6 +1038,8 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 							up(+1);
 		else if(code==KeyEvent.VK_D)
 								draw();
+		else if(code==KeyEvent.VK_C)
+		                        centerGraph();
 		else if(code==KeyEvent.VK_PLUS && !displayedFunction.hasFocus())
 								zoom(-1);
 		else if(code==KeyEvent.VK_MINUS && !displayedFunction.hasFocus())
@@ -1193,4 +1205,25 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	public void focusLost(FocusEvent arg0) {		
 		Object obj = arg0.getSource();
 	} 
+	
+	private void centerGraph() {
+	    int xDifference, yDifference, yMin = 0, yMax = 0;
+	    int[] yValues;
+	    
+	    // Calculate x value of center
+        readRange();
+        xDifference = (int)((calc.b-calc.a)/2 + calc.a) - Calculator.x0;
+        
+        // Calculate y value of center
+        yValues = calc.getYValues();
+        for(int index=0; index<calc.getN(); index++) {
+            if (yValues[index] > yMax)
+                yMax = yValues[index];
+            else if (yValues[index] < yMin)
+                yMin = yValues[index];
+        }
+        yDifference = (int)(yMax-yMin)/2 - Calculator.y0;
+        calc.moveCenter(xDifference,yDifference);
+        draw();
+	}
 }

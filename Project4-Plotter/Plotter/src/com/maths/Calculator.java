@@ -37,6 +37,9 @@ public class Calculator extends Renderer3D{
 	int n=1000;//precision
 	int ny=30;//precision
 	int nx=30;//precision
+	
+	int[] yValues = new int[n];
+	
 	//private ParseFunction pf;
 	private MathTree mathTree=null;
 	private double[] fun;
@@ -137,6 +140,8 @@ public class Calculator extends Renderer3D{
 			
 		  	int cx=(int)(x/deltax)+x0;
 		  	int cy=(int)(y/deltay)+y0;
+		  	
+		  	yValues[k] = cy;
 		  	
 			if(cy<j && cx<i && cx>=0 && cy>=0)
 				graphics2D.drawOval(cx,j-cy,1,1);
@@ -534,9 +539,14 @@ public class Calculator extends Renderer3D{
 	}
 
 
+	public int[] getYValues() {
+	    return yValues;
+	}
 
 
-
+	public int getN() {
+	    return n;
+	}
 
 
 
