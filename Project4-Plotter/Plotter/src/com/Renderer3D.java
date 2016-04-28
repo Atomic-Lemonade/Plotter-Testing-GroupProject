@@ -38,8 +38,8 @@ public class Renderer3D {
 	//public int screen_distance=10;
 	
 	
-	public int y0=250;
-	public int x0=250;
+	public static int y0=250;
+	public static int x0=250;
 	
 	double fi=(1.4);//rotation angle
 	double s2=Math.sqrt(2);

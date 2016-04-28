@@ -119,8 +119,9 @@ public class Calculator extends Renderer3D{
 		mathTree=new MathTree(DISPLAYED_FUNCTION.substring(0));
 		
 		if(recalculate)
-		 fun3D=calculateFunction3D();
-		 plotFunction3D(fun3D,buf);
+		   fun3D=calculateFunction3D();
+		
+		plotFunction3D(fun3D,buf);
 		
 	}
 	
@@ -494,8 +495,8 @@ public class Calculator extends Renderer3D{
 	 */
 	public void drag(int xdrag,int ydrag) {
 		recalculate=false;
-		x0+=xdrag;
-		y0+=ydrag;
+		x0=xdrag;
+		y0=ydrag;
 	}
 
 	/**

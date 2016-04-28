@@ -38,6 +38,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.Renderer3D;
 import com.maths.Calculator;
 
 
@@ -1102,16 +1103,17 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	public void mouseClicked(MouseEvent arg0) {
-		
-		Point point = arg0.getPoint();
-		movetToCenter(point.x,point.y);
-		/*int BORDER_LIMIT=50;
-		
-		Point point = arg0.getPoint();	
-		if(point.y<BORDER_LIMIT) up(-1);
-		if(point.y>pannel.getHeight()-BORDER_LIMIT) up(+1);
-		if(point.x<BORDER_LIMIT) left(+1);
-		if(point.x>pannel.getWidth()-BORDER_LIMIT) left(-1);*/
+		/*
+		 * Point point = arg0.getPoint();
+         * movetToCenter(point.x,point.y);
+		 * int BORDER_LIMIT=50;
+		 *
+		 * Point point = arg0.getPoint();	
+		 * if(point.y<BORDER_LIMIT) up(-1);
+		 * if(point.y>pannel.getHeight()-BORDER_LIMIT) up(+1);
+		 * if(point.x<BORDER_LIMIT) left(+1);
+		 * if(point.x>pannel.getWidth()-BORDER_LIMIT) left(-1);
+		 */
 	}
 
 	private void movetToCenter(int x, int y) {
@@ -1139,13 +1141,6 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	public void mouseReleased(MouseEvent arg0) {
-		
-		 int x = arg0.getX();
-	     int y = arg0.getY();
-	     if(x-xPressed!=0 || -y+yPressed!=0 ){
-		     calc.drag(x-xPressed,-y+yPressed);
-		     draw();
-	     }
 	}
 
 
@@ -1157,7 +1152,15 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	public void mouseDragged(MouseEvent arg0) {
-	
+
+        int x = arg0.getX();
+        int y = arg0.getY();
+        
+        int xDifference = x-xPressed;
+        int yDifference = y-yPressed;
+        
+        calc.drag(xDifference+x, -yDifference);
+        draw();
 	
 	}
 	
