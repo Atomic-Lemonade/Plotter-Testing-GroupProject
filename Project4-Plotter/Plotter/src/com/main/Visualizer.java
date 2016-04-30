@@ -65,6 +65,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	//size of the diplay panel
 	public static int HEIGHT=500;
 	public static int WIDTH=800;
+	private static final int xCenter = WIDTH/2;
+	private static final int yCenter = HEIGHT/2;
+	private static final int zoomScale = 80;
+	public double zoomModifier = 1;
 	private Calculator calc;
 	
 	public static int BUTTOMBORDER=100;
@@ -267,7 +271,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
         
         centerBtn = new JButton("<html><body><u>C</u>enter</body></html>");
         centerBtn.addActionListener(this);
-        centerBtn.setBounds(100,2,80,20);
+        centerBtn.setBounds(105,2,80,20);
 		
 		more=new JButton("+");
 		more.addActionListener(this);
@@ -961,10 +965,11 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		double alfa=1.0;
 		if(i>0){
 			alfa=0.5;
+			zoomModifier *= 2;
 		}
 		else {
 			alfa=2.0;
-			
+			zoomModifier /= 2;
 		}
 		int dx=(int) ((WIDTH/2-calc.x0)*(1-1.0/alfa));
 		int dy=(int) ((HEIGHT/2-calc.y0)*(1-1.0/alfa));
@@ -1206,15 +1211,21 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		Object obj = arg0.getSource();
 	} 
 	
+	// TODO
 	private void centerGraph() {
-	    int xDifference, yDifference, yMin = 0, yMax = 0;
+	    int xPos, yPos, yMin = 0, yMax = 0;
 	    int[] yValues;
 	    
-	    // Calculate x value of center
+        System.out.println("Old x0: " + Calculator.x0);
+        System.out.println("Old y0: " + Calculator.y0);
+        System.out.println("A: " + calc.a);
+        System.out.println("B: " + calc.b);
+	    
+	    // Calculate x value of center using graph units
         readRange();
-        xDifference = (int)((calc.b-calc.a)/2 + calc.a) - Calculator.x0;
+        xPos = (int)(((calc.b-calc.a)/2 + calc.a)*zoomScale*zoomModifier);
         
-        // Calculate y value of center
+        // Calculate y value of center using pixel units
         yValues = calc.getYValues();
         for(int index=0; index<calc.getN(); index++) {
             if (yValues[index] > yMax)
@@ -1222,8 +1233,16 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
             else if (yValues[index] < yMin)
                 yMin = yValues[index];
         }
-        yDifference = (int)(yMax-yMin)/2 - Calculator.y0;
-        calc.moveCenter(xDifference,yDifference);
+        System.out.println("yMin: " + yMin);
+        System.out.println("yMax: " + yMax);
+        yPos = (yMax-yMin)/2+yMin;
+        System.out.println("xPos: " + xPos);
+        System.out.println("yPos: " + yPos);
+        calc.setY0(yCenter+yPos);
+        calc.setX0(xCenter-xPos);
+        
+        System.out.println("New x0: " + Calculator.x0);
+        System.out.println("New y0: " + Calculator.y0);
         draw();
 	}
 }
