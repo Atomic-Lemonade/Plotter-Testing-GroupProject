@@ -1211,18 +1211,15 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		Object obj = arg0.getSource();
 	} 
 	
-	// TODO
+	/**
+	 * Centers the graph on the viewing screen.
+	 */
 	private void centerGraph() {
 	    int xPos, yPos, yMin = 0, yMax = 0;
 	    int[] yValues;
 	    
-        System.out.println("Old x0: " + Calculator.x0);
-        System.out.println("Old y0: " + Calculator.y0);
-        System.out.println("A: " + calc.a);
-        System.out.println("B: " + calc.b);
-	    
 	    // Calculate x value of center using graph units
-        readRange();
+        draw();
         xPos = (int)(((calc.b-calc.a)/2 + calc.a)*zoomScale*zoomModifier);
         
         // Calculate y value of center using pixel units
@@ -1233,16 +1230,14 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
             else if (yValues[index] < yMin)
                 yMin = yValues[index];
         }
-        System.out.println("yMin: " + yMin);
-        System.out.println("yMax: " + yMax);
-        yPos = (yMax-yMin)/2+yMin;
-        System.out.println("xPos: " + xPos);
-        System.out.println("yPos: " + yPos);
+        if (yMax != 0)
+            yPos = (int)(-yMax*zoomScale*zoomModifier);
+        else
+            yPos = (int)(-yMin*zoomScale*zoomModifier);
+        
+        // Center graph
         calc.setY0(yCenter+yPos);
         calc.setX0(xCenter-xPos);
-        
-        System.out.println("New x0: " + Calculator.x0);
-        System.out.println("New y0: " + Calculator.y0);
         draw();
 	}
 }
