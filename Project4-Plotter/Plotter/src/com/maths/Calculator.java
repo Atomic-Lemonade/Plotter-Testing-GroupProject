@@ -141,7 +141,7 @@ public class Calculator extends Renderer3D{
 		  	int cx=(int)(x/deltax)+x0;
 		  	int cy=(int)(y/deltay)+y0;
 		  	
-		  	yValues[k] = cy;
+		  	yValues[k] = (int)fun2[k];
 		  	
 			if(cy<j && cx<i && cx>=0 && cy>=0)
 				graphics2D.drawOval(cx,j-cy,1,1);
