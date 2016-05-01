@@ -557,6 +557,8 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
     public void draw(){
     	
     	draw(getGraphics2D());
+    	setCenter();
+    	autoZoom(); //TODO
     }
 
 	public void draw(Graphics2D graphics2D){
@@ -1240,4 +1242,58 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
         calc.setX0(xCenter-xPos);
         draw();
 	}
+    
+    /**
+     * Zoom in on graph until the width fits visibly on the viewing screen.
+     */
+    private void autoZoom() {
+        int xPos, xMin = 0, xMax = 0;
+        
+        xMin = (int)(calc.getA()*zoomScale*zoomModifier);
+        xMax = (int)(calc.getB()*zoomScale*zoomModifier);
+        
+        // Calculate x value of center using graph units
+        xPos = (int)(((calc.b-calc.a)/2 + calc.a)*zoomScale*zoomModifier);
+        
+        System.out.println("Lower Bound: " + (xPos-WIDTH/2));
+        System.out.println("Upper Bound: " + (xPos+WIDTH/2));
+        
+        System.out.println("xMin: " + xMin);
+        System.out.println("xMax: " + xMax);
+        
+        // Adjust based on graph width
+        while (((xPos-WIDTH/2)>xMin) || ((xPos+WIDTH/2)<xMax)){
+            zoom(-1);
+            setCenter();
+        }
+        //while (((xPos-WIDTH*0.7)>xMin) || ((xPos+WIDTH*0.7)<xMax))
+            //zoom(-1);
+    }
+    
+    public void setCenter()
+    {
+        int xPos, yPos, yMin = 0, yMax = 0;
+        int[] yValues;
+        
+        // Calculate x value of center using graph units
+        readRange();
+        xPos = (int)(((calc.b-calc.a)/2 + calc.a)*zoomScale*zoomModifier);
+        
+        // Calculate y value of center using pixel units
+        yValues = calc.getYValues();
+        for(int index=0; index<calc.getN(); index++) {
+            if (yValues[index] > yMax)
+                yMax = yValues[index];
+            else if (yValues[index] < yMin)
+                yMin = yValues[index];
+        }
+        if (yMax != 0)
+            yPos = (int)(-yMax*zoomScale*zoomModifier);
+        else
+            yPos = (int)(-yMin*zoomScale*zoomModifier);
+        
+        // Center graph
+        calc.setY0(yCenter+yPos);
+        calc.setX0(xCenter-xPos);
+    }
 }

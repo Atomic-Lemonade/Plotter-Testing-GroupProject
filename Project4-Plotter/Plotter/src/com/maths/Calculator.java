@@ -538,16 +538,39 @@ public class Calculator extends Renderer3D{
 	  	return df.format((x-x0)*deltax);
 	}
 
-
+	/**
+	 * Returns the vertical shift amount.
+	 * 
+	 * @return the amount of vertical shift
+	 */
 	public int[] getYValues() {
 	    return yValues;
 	}
 
-
+	/**
+	 * Returns the number of points used in the graph.
+	 * 
+	 * @return the number of points used in the graph.
+	 */
 	public int getN() {
 	    return n;
 	}
-
-
-
+	
+	/**
+	 * Returns the lower limit of the graph's x-coordinate in graph units.
+	 * 
+	 * @return the lower x-coordinate limit of the graph in graph units
+	 */
+	public double getA() {
+	    return a;
+	}
+	
+	/**
+	 * Returns the upper limit of the graph's x-coordinate in graph units.
+	 * 
+	 * @return the upper x-coordinate limit of the graph in graph units
+	 */
+	public double getB() {
+	    return b;
+	}
 }
