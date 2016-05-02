@@ -381,11 +381,11 @@ public class Renderer3D {
 		int length=50;
 		int axis_color = Visualizer.AXIS_COLOR.getRGB();
 		
-		//y axis
+		//z axis
 		decomposeLine(0,0,0,0,0,length,zbuffer,axis_color);
 		//x axis
 		decomposeLine(0,0,0,0,length,0,zbuffer,axis_color);
-		//z axis
+		//y axis
 		decomposeLine(0,0,0,length,0,0,zbuffer,axis_color);		
 	}
 	
@@ -404,7 +404,8 @@ public class Renderer3D {
 
 			double i_yy=1.0/(yy2-yy1);
 
-			if(yy2>yy1)
+			//Draw y axis
+			if(yy2>yy1){
 
 				for (int yy = yy1; yy <= yy2; yy++) {
 
@@ -428,8 +429,11 @@ public class Renderer3D {
 						continue;			
 
 					zb.set(xx,yy,zi,rgbColor);
+					
 				}
-			else
+			// Draw z axis
+			} else {
+			    
 				for (int yy = yy2; yy <= yy1; yy++) {
 
 					double l=-(yy-yy2)*i_yy;
@@ -453,14 +457,18 @@ public class Renderer3D {
 
 
 					zb.set(xx,yy,zi,rgbColor);
-				}
-
+					
+				} 
+			}
 		}
 		else if(xx1!=xx2){
 			
 			double i_xx=1.0/(xx2-xx1);
 
-			if(xx2>xx1)
+			
+			// Draw x axis
+			if(xx2>xx1){
+			    
 				for (int xx = xx1; xx <= xx2; xx++) {
 
 					double l=(xx-xx1)*i_xx;
@@ -484,7 +492,11 @@ public class Renderer3D {
 
 					zb.set(xx,yy,zi,rgbColor);
 				}
-			else
+				
+			}
+			
+			else {
+			    
 				for (int xx = xx2; xx <= xx1; xx++) { 
 
 					double l=-(xx-xx2)*i_xx;
@@ -508,7 +520,8 @@ public class Renderer3D {
 
 					zb.set(xx,yy,zi,rgbColor);
 				}
-
+				
+			}          
 		}
 		else {
 			

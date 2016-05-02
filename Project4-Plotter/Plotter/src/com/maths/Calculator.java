@@ -329,7 +329,6 @@ public class Calculator extends Renderer3D{
 			graphics2D.drawLine(0,j-y0,i,j-y0);
 		
 		
-		
 
 		
 		double xa=deltax*(-x0);
@@ -408,7 +407,6 @@ public class Calculator extends Renderer3D{
 
 
 
-
 	/**
 	 * This is the funcion diplayed
 	 * @param x
@@ -483,6 +481,7 @@ public class Calculator extends Renderer3D{
 		 deltax/=0.5;
 		} 
 		deltay=deltax;
+		deltaz=deltax;
 	}
 
 
