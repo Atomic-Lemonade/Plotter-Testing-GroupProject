@@ -1230,7 +1230,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	    int[] yValues;
 	    
 	    // Calculate x value of center using graph units
-        readRange();
+        draw();
         xPos = (int)(((calc.getB()-calc.getA())/2 + calc.getA())*
                 zoomScale*zoomModifier);
         
@@ -1334,7 +1334,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
      * Initial graph drawing produced by pressing the draw button.
      */
     private void manualDraw() {
-        draw(); // TODO: Remove line if autozoom implemented
+        centerGraph(); // TODO: Remove line if autozoom implemented
         //autoZoom();
     }
 }
