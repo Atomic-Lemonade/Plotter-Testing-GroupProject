@@ -15,6 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+/**
+ * Creates a dialog to store graph point data in a text file.
+ */
 public class ExportDataPanel extends JDialog implements ActionListener{
 	
 	int HEIGHT=200;
@@ -34,6 +37,11 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 	private String d_separator;
 	private JTextField data_separator;
 	
+	/**
+	 * Creates an export data panel with the graphed function.
+	 * 
+	 * @param fun the Object that represents the function being graphed
+	 */
 	public ExportDataPanel(Object fun) {
 		
 		init();
@@ -132,11 +140,17 @@ public class ExportDataPanel extends JDialog implements ActionListener{
         setVisible(true);     
 	}
 
+	/**
+	 * Sets default point delimiters.
+	 */
 	private void init() {		
 		v_separator=",";
 		d_separator="\n";
 	}
 
+	/**
+	 * Sets save and exit actions with their respective buttons.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		
@@ -150,10 +164,16 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 		}		
 	}
 
+	/**
+	 * Closes export data window.
+	 */
 	private void exit() {
 		dispose();	
 	}
 
+	/**
+	 * Saves the function's point data in a text file.
+	 */
 	private void save() {
 		PrintWriter pw=null;
 		boolean displaySaveSuccessful = true;
@@ -219,10 +239,22 @@ public class ExportDataPanel extends JDialog implements ActionListener{
 		}		
 	}
 
+	/**
+	 * Converts the point data of a 3D graph into a string.
+	 * 
+	 * @param data the double array containing a 3D graph's point data
+	 * @return a String containing the point data of a 3D graph
+	 */
 	private String decomposeFunction3D(double[] data) {
 		return data[0]+v_separator+data+v_separator+data[1]+v_separator+data[2]+d_separator;		
 	}
 
+	/**
+	 * Converts the point data of the 2D graph into a string
+	 *  
+	 * @param data the double array containing the 2D graph's point data
+	 * @return a String containing the point data of a 2D graph
+	 */
 	private String decomposeFunction(double[] data) {	
 		return data[0]+v_separator+data[1]+d_separator;
 	}

@@ -41,7 +41,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.Renderer3D;
 import com.maths.Calculator;
 
-
+/**
+ * Main program window.
+ */
 public class Visualizer extends JFrame implements ActionListener,KeyListener,
     MenuListener,MouseListener,MouseWheelListener,MouseMotionListener, FocusListener{
 	
@@ -118,7 +120,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	private BufferedImage buf=null;
 	private JMenuItem jmt42;
 	
-	
+	/**
+	 * Creates main graphing program window.
+	 */
 	public Visualizer(){
 		
 		loadProperties();
@@ -195,7 +199,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * @return
+	 * Creates a menu bar for the graphing program.
 	 */
 	private void buildMenuBar() {
 		
@@ -261,7 +265,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Creates the bottom panel of the main graphing window with draw,
+	 * zoom, and center buttons as well as key instructions. In a 2D graphing
+	 * state, there is also a mouse-coordinate tracker.
 	 */
 	private void buildBottomPanel() {		
 		
@@ -329,7 +335,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Creates a panel containing the Cartesian 2D function input field.
 	 */
 	private void buildUpPanel() {
 		
@@ -356,9 +362,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 	
 	/**
-		 * 
-		 */
-		private void buildPolarUpPanel() {
+	 * Creates a panel containing the Polar 2D function input field.
+	 */
+	private void buildPolarUpPanel() {
 		
 			up=new JPanel();
 			up.setLayout(null);
@@ -383,7 +389,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		}
 	
 		/**
-		 * 
+		 * Creates a panel containing the Cartesian 3D function input field.
 		 */
 		private void build3DUpPanel() {
 			
@@ -410,8 +416,8 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		}
 		
 		/**
-			 * 
-			 */
+		 * Creates a panel with the domain and range boundary input fields.
+		 */
 		private void build3DRightPanel() {
 			
 			right=new JPanel();
@@ -472,7 +478,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * @return
+	 * Creates a panel with Cartesian 2D domain boundary input fields.
 	 */
 	private void buildRightPanel() {
 		
@@ -481,7 +487,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		right.setBounds(LEFTBORDER+WIDTH,UPBORDER,RIGHTBORDER,HEIGHT);
 			
 		
-		JLabel rlabel = new JLabel("Displayed range:");
+		JLabel rlabel = new JLabel("Displayed domain:");
 		rlabel.setBounds(5,60,100,20);
 		right.add(rlabel);
 		
@@ -519,12 +525,11 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		displayedA.setText(""+calc.a);
 		displayedB.setText(""+calc.b);
 	}
-	
-	
+		
 	/**
-		 * @return
-		 */
-		private void buildPolarRightPanel() {
+	 * Creates a panel with Polar 2D range boundary inpur fields
+	 */
+	private void buildPolarRightPanel() {
 		
 			right=new JPanel();
 			right.setLayout(null);
@@ -560,11 +565,19 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 			displayedB.setText(""+calc.b);
 		}
 
+	/**
+	 * Draws a graph of the input function.
+	 */
     public void draw(){
     	
     	draw(getGraphics2D());
     }
 
+    /**
+     * Draws a graph of the input function.
+     * 
+     * @param graphics2D a Graphics2D objed using in drawing the graph
+     */
 	public void draw(Graphics2D graphics2D){
 		
 		
@@ -630,7 +643,8 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 	
 	/**
-	 * 
+	 * Records current domain/range input from the associated graph state
+	 * within the program.
 	 */
 	private void readRange() {
 		double a=Double.parseDouble(displayedA.getText());
@@ -653,7 +667,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * To redraw the graph if the panel is moved or iconified
+	 * Redraws the graph if the panel is moved or iconified
 	 *
 	 **/
 	public void paint(Graphics arg0) {
@@ -663,13 +677,17 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 	}
 	
+	/**
+	 * Repaints the graph without recalculating the input function.
+	 */
     public void update(Graphics arg0) {
     	calc.setRecalculate(false);	
     	super.update(arg0);
     	    	
     }
 	
-	/* (non-Javadoc)
+	/**
+	 * Repaints the graph.
 	 * @see java.awt.Component#repaint()
 	 */
 	public void repaint() {
@@ -677,7 +695,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}		
 
 	/**
-	 * 
+	 * Removes the function's graph from the graph viewing window.
 	 */
 	private void clean(Graphics2D g2d) {
 		g2d.setColor(center.getBackground());
@@ -687,7 +705,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Initialize the Graphics2D and buffer objects.
 	 */
 	public void initialize() {
 		
@@ -698,6 +716,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 	}
 	
+	/**
+	 * Loads the program properties from an external file.
+	 */
 	public void loadProperties(){
 		
 		p=new Properties();
@@ -713,6 +734,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/** 
+	 * Sets actions for any assciated buttons.
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
@@ -821,6 +843,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 	}
 
+	/**
+	 * Opens a dialog to save the current graph as a jpg file.
+	 */
 	private void saveImage() 
 	{
 		/**Sets the save dialogue to show only .jpg extension*/
@@ -847,6 +872,11 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		}
 	}
 	
+	/**
+	 * Saves the current graph as a jpg file with the specified file
+	 * 
+	 * @param file  the specified File
+	 */
 	private void saveImage(File file) {
 		
 		//drawFace();
@@ -864,6 +894,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 
 
+	/**
+	 * Creates an export dialod to store the graph's point coordinates in a text
+	 * file.
+	 */
 	private void exportData() {
 		
 		Object fun=null;
@@ -885,14 +919,19 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Creates a color selector panel.
 	 */
 	private void selectColors() {
 		
-		Colorpanel cp=new Colorpanel(p);
+		ColorPanel cp=new ColorPanel(p);
 		setColors(p);			
 	}
 
+	/**
+	 * Sets colors to specified panels and/or background.
+	 * 
+	 * @param p2 the Properties for which component to recolor
+	 */
 	private void setColors(Properties p2) {		
 		setInitColors(p2);		
 		center.setBackground(BACKGROUND_COLOR);
@@ -902,50 +941,55 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		draw();
 	}
 	
+	/**
+	 * Associates color changing properties with the desired components.
+	 * 
+	 * @param p2 the Properties for which component to recolor
+	 */
 	private void setInitColors(Properties p2) {
 
 		if(p2.getProperty("BACKGROUND_COLOR")!=null){
-			BACKGROUND_COLOR=Colorpanel.buildColor(p2.getProperty("BACKGROUND_COLOR"));
+			BACKGROUND_COLOR=ColorPanel.buildColor(p2.getProperty("BACKGROUND_COLOR"));
 		}
 		else{
-			p2.setProperty("BACKGROUND_COLOR",Colorpanel.decomposeColor(BACKGROUND_COLOR));
+			p2.setProperty("BACKGROUND_COLOR",ColorPanel.decomposeColor(BACKGROUND_COLOR));
 		}
 		
 		if(p2.getProperty("PANEL_COLOR")!=null){
-			PANEL_COLOR=Colorpanel.buildColor(p2.getProperty("PANEL_COLOR"));
+			PANEL_COLOR=ColorPanel.buildColor(p2.getProperty("PANEL_COLOR"));
 		}
 		else{
-			p2.setProperty("PANEL_COLOR",Colorpanel.decomposeColor(PANEL_COLOR));
+			p2.setProperty("PANEL_COLOR",ColorPanel.decomposeColor(PANEL_COLOR));
 		}
 		
 		if(p2.getProperty("LINE_COLOR")!=null){
-			LINE_COLOR=Colorpanel.buildColor(p2.getProperty("LINE_COLOR"));
+			LINE_COLOR=ColorPanel.buildColor(p2.getProperty("LINE_COLOR"));
 
 		}
 		else{
-			p2.setProperty("LINE_COLOR",Colorpanel.decomposeColor(LINE_COLOR));
+			p2.setProperty("LINE_COLOR",ColorPanel.decomposeColor(LINE_COLOR));
 		}
 		
 		if(p2.getProperty("LINE_2_COLOR")!=null){
-			LINE_2_COLOR=Colorpanel.buildColor(p2.getProperty("LINE_2_COLOR"));
+			LINE_2_COLOR=ColorPanel.buildColor(p2.getProperty("LINE_2_COLOR"));
 
 		}
 		else{
-			p2.setProperty("LINE_2_COLOR",Colorpanel.decomposeColor(LINE_2_COLOR));
+			p2.setProperty("LINE_2_COLOR",ColorPanel.decomposeColor(LINE_2_COLOR));
 		}
 		if(p2.getProperty("AXIS_COLOR")!=null){
-			AXIS_COLOR=Colorpanel.buildColor(p2.getProperty("AXIS_COLOR"));
+			AXIS_COLOR=ColorPanel.buildColor(p2.getProperty("AXIS_COLOR"));
 
 		}
 		else{
-			p2.setProperty("AXIS_COLOR",Colorpanel.decomposeColor(AXIS_COLOR));
+			p2.setProperty("AXIS_COLOR",ColorPanel.decomposeColor(AXIS_COLOR));
 		}
 		
 		if(p2.getProperty("LINE_3D_COLOR")!=null){
-			LINE_3D_COLOR=Colorpanel.buildColor(p2.getProperty("LINE_3D_COLOR"));
+			LINE_3D_COLOR=ColorPanel.buildColor(p2.getProperty("LINE_3D_COLOR"));
 		}
 		else{
-			p2.setProperty("LINE_3D_COLOR",Colorpanel.decomposeColor(LINE_3D_COLOR));
+			p2.setProperty("LINE_3D_COLOR",ColorPanel.decomposeColor(LINE_3D_COLOR));
 		}
 
 	}
@@ -953,7 +997,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Exits the program.
 	 */
 	private void exit() {
 		dispose();
@@ -964,7 +1008,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Adjusts the graph viewing window's zoom.
 	 */
 	private void zoom(int i) {
 		calc.zoom(i);
@@ -1036,7 +1080,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 	}
 	
-
+	/**
+	 * Triggers associated UI component depending on the key pressed.
+	 */
 	public void keyPressed(KeyEvent arg0) {
 		int code =arg0.getKeyCode();
 		if(code==KeyEvent.VK_LEFT && !displayedFunction.hasFocus())
@@ -1069,7 +1115,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * 
+	 * Shifts graph view up.
 	 */
 	private void up(int signum) {
 		calc.up(signum);
@@ -1078,7 +1124,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 
 	/**
-	 * 
+	 * Shifts graph view left.
 	 */
 	private void left(int signum) {
 		calc.left(signum);
@@ -1087,7 +1133,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 
 	/**
-	 * 
+	 * Creates the Cartesian 2D integral panel.
 	 */
 	private void calculateIntegral() {
 		
@@ -1099,7 +1145,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 	/**
-	 * @param string    
+	 * Displays a generic error message.
+	 * 
+	 * @param string the String describing the error   
 	 */
 	public void error(String string) {
 		JOptionPane.showMessageDialog(null,string,"Error",JOptionPane.ERROR_MESSAGE);
@@ -1108,12 +1156,17 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 
 
 
-	
+	/**
+	 * Disables graph redrawing while menu is open.
+	 */
 	public void menuSelected(MenuEvent arg0) {
 		redrawAfterMenu=false;	
 		
 	}
 
+	/**
+	 * Enables graph redrawing while menu is closed.
+	 */
 	public void menuDeselected(MenuEvent arg0) {
 		redrawAfterMenu=true;
 			
@@ -1154,9 +1207,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	public void mouseExited(MouseEvent arg0) {
 		
 	}
-
-
-
+	
+	/**
+	 * Records mouse coordinates on click.
+	 */
 	public void mousePressed(MouseEvent arg0) {
 		
 		 xPressed = arg0.getX();
@@ -1181,8 +1235,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		if(pix>0) zoom(-1);
 		else zoom(+1);
 	}
-
-
+   
+    /**
+     * Moves graph viewing window in conjunction with mouse dragging.
+     */
 	public void mouseDragged(MouseEvent arg0) {
 		/**Current mouse X and Y values*/
         int x = arg0.getX();
@@ -1201,7 +1257,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
         draw();	
 	}
 	
-	
+	/**
+	 * Tracks mouse location in graph viewing window in terms of graph coordinates.
+	 */
 	public void mouseMoved(MouseEvent arg0) {
 		
 		Point p=arg0.getPoint();
@@ -1291,15 +1349,6 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
             adjustmentFactor = 'x';
         else
             adjustmentFactor = 'y';
-        
-        System.out.println("yMin:  " + yMin*scaling + "\n" +
-                           "yMinG: " + (center.getY()-HEIGHT/2) + "\n" +
-                           "yMax:  " + yMax*scaling + "\n" +
-                           "yMaxG: " + (center.getY()+HEIGHT/2) + "\n" +
-                           "xMin:  " + xMin*scaling + "\n" +
-                           "xMinG: " + (center.getX()-WIDTH/2) + "\n" +
-                           "xMax:  " + xMax*scaling + "\n" +
-                           "xMaxG: " + (center.getX()+WIDTH/2) + "\n"); 
         
         // Adjust zoom based on x coordinates
         if (adjustmentFactor == 'x')
