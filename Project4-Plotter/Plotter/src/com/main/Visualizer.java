@@ -117,7 +117,6 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	private File currentDirectory=null;
 	private BufferedImage buf=null;
 	private JMenuItem jmt42;
-    private boolean hasCenterBtn;
 	
 	
 	public Visualizer(){
@@ -268,14 +267,13 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		
 	    draw=new JButton("<html><body><u>D</u>raw</body></html>");
         draw.addActionListener(this);
-        draw.setBounds(105,2,60,20);
+        draw.setBounds(125,2,60,20);
         
         // Allow centering of Cartesian 2D graphs
         if (VISUALIZATION_STATE==CARTESIAN2D_STATE) {
             centerBtn = new JButton("<html><body><u>C</u>enter</body></html>");
             centerBtn.addActionListener(this);
             centerBtn.setBounds(20,2,80,20);
-            hasCenterBtn = true;
         }
         else {
             centerBtn.setVisible(false);
@@ -714,7 +712,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 
 
-	/* (non-Javadoc)
+	/** 
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
@@ -722,7 +720,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		Object o=arg0.getSource();
 		
 		if(o==draw || o==jmt2 )
-			draw();
+			manualDraw();
 		else if (o==more){
 			zoom(+1);
 		}
@@ -1050,7 +1048,7 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 		else if(code==KeyEvent.VK_DOWN )
 							up(+1);
 		else if(code==KeyEvent.VK_D)
-								draw();
+								manualDraw();
 		else if(code==KeyEvent.VK_C)
 		                        centerGraph();
 		else if(code==KeyEvent.VK_PLUS && !displayedFunction.hasFocus())
@@ -1174,6 +1172,10 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	}
 
 
+	/**
+	 * Increases zoom when mouse wheel scrolled up and decreases zoom
+	 * when mouse wheel scrolled down.
+	 */
    public void mouseWheelMoved(MouseWheelEvent arg0) {
 		int pix=arg0.getUnitsToScroll();
 		if(pix>0) zoom(-1);
@@ -1222,8 +1224,9 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
 	/**
 	 * Centers the Cartesian 2D graph on the viewing screen.
 	 */
-	private void centerGraph() {
-	    int xPos, yPos, yMin = 0, yMax = 0;
+	private Point centerGraph() {
+	    int xPos, yPos, yMin = 0, yMax = 0,
+	        newCenterX, newCenterY;
 	    int[] yValues;
 	    
 	    // Calculate x value of center using graph units
@@ -1245,36 +1248,93 @@ public class Visualizer extends JFrame implements ActionListener,KeyListener,
             yPos = (int)(-yMin*zoomScale*zoomModifier);
         
         // Center graph
+        newCenterY = yCenter+yPos;
+        newCenterX = xCenter+xPos;
         calc.setY0(yCenter+yPos);
         calc.setX0(xCenter-xPos);
         draw();
+        
+        return new Point(newCenterX, newCenterY);
 	}
     
     /**
      * Zoom in on graph until the width fits visibly on the viewing screen.
      */
     private void autoZoom() {
-        int viewWidth, xPos, xMin = 0, xMax = 0;
+        Point center;
+        char adjustmentFactor;
+        int totalPoints = calc.getN();
+        double xBase1, xBase2, yBase1, yBase2, xMin, xMax,
+               yMin = 0, yMax = 0, scaling;
+        double[] yValues = new double[totalPoints];
         
-        xMin = (int)(calc.getA()*zoomScale*zoomModifier);
-        xMax = (int)(calc.getB()*zoomScale*zoomModifier);
+        // Calculate y values in terms of graph units
+        for(int point=0; point<totalPoints; point++)
+            yValues[point] = calc.f(point);
+
+        // Find the min and max of y values in graph units
+        for(int index=0; index<totalPoints; index++) {
+            if (yValues[index] > yMax)
+                yMax = yValues[index];
+            else if (yValues[index] < yMin)
+                yMin = yValues[index];
+        }
         
-        // Calculate x value of center using graph units
-        xPos = (int)(((calc.b-calc.a)/2 + calc.a)*zoomScale*zoomModifier);
+        // Get the min and max of x values in graph units
+        xMin = calc.getA();
+        xMax = calc.getB();
         
-        // Adjust view width based on zoom
-        viewWidth = (int)((WIDTH/2)*zoomScale*zoomModifier);
+        // Prepare to adjust zoom
+        scaling = zoomScale*zoomModifier;
+        center = centerGraph();
+        if ((Math.abs(xMin-xMax)>Math.abs(yMin-yMax)))
+            adjustmentFactor = 'x';
+        else
+            adjustmentFactor = 'y';
         
-        System.out.println("Lower Bound: " + (xPos-viewWidth));
-        System.out.println("Upper Bound: " + (xPos+viewWidth));
+        System.out.println("yMin:  " + yMin*scaling + "\n" +
+                           "yMinG: " + (center.getY()-HEIGHT/2) + "\n" +
+                           "yMax:  " + yMax*scaling + "\n" +
+                           "yMaxG: " + (center.getY()+HEIGHT/2) + "\n" +
+                           "xMin:  " + xMin*scaling + "\n" +
+                           "xMinG: " + (center.getX()-WIDTH/2) + "\n" +
+                           "xMax:  " + xMax*scaling + "\n" +
+                           "xMaxG: " + (center.getX()+WIDTH/2) + "\n"); 
         
-        System.out.println("xMin: " + xMin);
-        System.out.println("xMax: " + xMax);
-        
-        // Adjust based on graph width
-        while (((xPos-viewWidth)>xMin) || ((xPos+viewWidth)<xMax))
-            zoom(+1);
-        //while (((xPos-WIDTH*0.7)>xMin) || ((xPos+WIDTH*0.7)<xMax))
-            //zoom(-1);
+        // Adjust zoom based on x coordinates
+        if (adjustmentFactor == 'x')
+        {
+            xBase1 = (center.getX()-WIDTH/2);
+            xBase2 = (center.getX()+WIDTH/2);
+            if ((xMin*scaling)<xBase1){
+                do {
+                    //...
+                } while(true);
+            }
+            else if ((xMax*scaling)<xBase2) {
+                while ((xMax*scaling)<xBase2)
+                    zoom(+1);
+            }
+        }
+        // Adjust zoom based on y coordinates
+        else
+        {
+            if ((yMin*scaling)<(center.getY()-HEIGHT/2)){
+                while ((yMin*scaling)<(center.getY()-HEIGHT/2))
+                    zoom(+1);
+            }
+            else if ((yMax*scaling)<(center.getY()+HEIGHT/2)) {
+                while ((yMax*scaling)<(center.getY()+HEIGHT/2))
+                    zoom(-1);
+            }
+        }
+    }
+    
+    /**
+     * Initial graph drawing produced by pressing the draw button.
+     */
+    private void manualDraw() {
+        draw(); // TODO: Remove line if autozoom implemented
+        //autoZoom();
     }
 }

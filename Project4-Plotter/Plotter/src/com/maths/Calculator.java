@@ -230,7 +230,7 @@ public class Calculator extends Renderer3D{
 		for(int k=0;k<n;k++)
 		{		  
 			double x=a+k*dx;
-			ret_fun[k]=f(x); 
+			ret_fun[k]=f(x);
 		}
 		return ret_fun;
 	}
@@ -469,7 +469,7 @@ public class Calculator extends Renderer3D{
 	}
 
 	/**
-	 * 
+	 * Adjusts axes zoom modifiers.
 	 */
 	public void zoom(int signum) {
 		
